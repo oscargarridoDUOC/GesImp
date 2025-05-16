@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GesImpApplication<GesImp>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "GLISERV.GesImp.GesImpApplication",
+            "projectName": "GesImp",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
