@@ -8,9 +8,12 @@ import GLISERV.GesImp.model.Producto;
 import GLISERV.GesImp.repository.FacturaRepository;
 import GLISERV.GesImp.repository.PedidoRepository;
 import GLISERV.GesImp.repository.ProductoRepository;
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 @Service
+@Transactional
 public class FacturaService {
 
     @Autowired
@@ -76,5 +79,17 @@ public class FacturaService {
         } else {
             return null;
         }
+    }
+
+    public List<Factura> buscarPorTipoPagoYTotalMinimo(String tipoPago, Integer montoMinimo){
+        return facturaRepository.buscarPorTipoPagoYTotalMinimo(tipoPago, montoMinimo);
+    }
+
+    public List<Factura> buscarFacturasPorUsuarioProductoYTipoPago(String nombreUsuario, String tipoProducto, String nombreTipoPago){
+        return facturaRepository.buscarFacturasPorUsuarioProductoYTipoPago(nombreUsuario, tipoProducto, nombreTipoPago);
+    }
+
+    public List<Factura> buscarFacturasPorUsuarioYProducto(String nombreUsuario, String nombreProducto){
+        return facturaRepository.buscarFacturasPorUsuarioYProducto(nombreUsuario, nombreProducto);
     }
 }

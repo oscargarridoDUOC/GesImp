@@ -72,4 +72,8 @@ public class InventarioService {
         }
     }
 
+    public List<Inventario> buscarInventarioPorTipoYRolUsuario(String tipoProducto, String rolUsuario){
+        return inventarioRepository.buscarInventarioPorTipoYRolUsuario(tipoProducto, rolUsuario);
+    }
+
 }

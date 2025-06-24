@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import GLISERV.GesImp.model.EstadoPedido;
+import GLISERV.GesImp.model.Factura;
+import GLISERV.GesImp.model.Pedido;
 import GLISERV.GesImp.repository.EstadoPedidoRepository;
-
+import GLISERV.GesImp.repository.FacturaRepository;
+import GLISERV.GesImp.repository.PedidoRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +19,12 @@ public class EstadoPedidoService {
 
     @Autowired
     private EstadoPedidoRepository estadoPedidoRepository;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
 
     public List<EstadoPedido> findAll() {
         return estadoPedidoRepository.findAll();
@@ -34,7 +43,21 @@ public class EstadoPedidoService {
     }
 
     public void deleteById(Long id) {
-        estadoPedidoRepository.deleteById(id);
+        EstadoPedido estado = estadoPedidoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("EstadoPedido no encontrado"));
+
+        List<Pedido> pedidos = pedidoRepository.findByEstado(estado);
+
+        for (Pedido pedido : pedidos) {
+            List<Factura> facturas = facturaRepository.findByPedido(pedido);
+            for (Factura factura : facturas) {
+                facturaRepository.delete(factura);
+            }
+
+            pedidoRepository.delete(pedido);
+        }
+
+        estadoPedidoRepository.delete(estado);
     }
 
     public EstadoPedido update(Long id, EstadoPedido estadoPedido) {

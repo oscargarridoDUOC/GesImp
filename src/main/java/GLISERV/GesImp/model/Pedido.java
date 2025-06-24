@@ -28,10 +28,10 @@ public class Pedido {
     @Column(nullable = false)
     private Date fecha;
 
-    @Column(nullable = true)
+    @Column(length = 250,nullable = true)
     private String detalles;
 
-    @Column(nullable = false)
+    @Column(length = 20, nullable = false)
     private Integer cantidad;
 
     @ManyToOne

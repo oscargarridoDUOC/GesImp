@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,15 +25,16 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 40)
+    @Column(length = 250, nullable = false)
     private String nombre;
     
-    @Column(nullable = false, unique = true,length = 100)
+    @Column(length = 250, nullable = false, unique = true)
     private String email;
     
-    @Column(nullable = false, length = 20)
+    @Column(length = 100, nullable = false)
     private String rol;
     
-    @Column(nullable = false, length = 20)
+    @Column(length = 12, nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 }

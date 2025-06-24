@@ -3,7 +3,9 @@ package GLISERV.GesImp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import GLISERV.GesImp.model.Factura;
 import GLISERV.GesImp.model.Pedido;
+import GLISERV.GesImp.repository.FacturaRepository;
 import GLISERV.GesImp.repository.PedidoRepository;
 
 import jakarta.transaction.Transactional;
@@ -16,6 +18,9 @@ public class PedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
 
     public List<Pedido> findAll() {
         return pedidoRepository.findAll();
@@ -33,8 +38,18 @@ public class PedidoService {
     }
 
     public void deleteById(Long id) {
-        pedidoRepository.deleteById(id);
+        Pedido pedido = pedidoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        List<Factura> facturas = facturaRepository.findByPedido(pedido);
+
+        for (Factura factura : facturas) {
+            facturaRepository.delete(factura);
+        }
+
+        pedidoRepository.delete(pedido);
     }
+
 
     public Pedido update(Long id, Pedido pedido) {
         Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
@@ -80,5 +95,9 @@ public class PedidoService {
         } else {
             return null;
         }
+    }
+
+    public List<Pedido> buscarPedidosPorEstadoProductoYUsuario(String estado, String nombreProducto, String nombreUsuario){
+        return pedidoRepository.buscarPedidosPorEstadoProductoYUsuario(estado, nombreProducto, nombreUsuario);
     }
 }

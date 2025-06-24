@@ -22,7 +22,7 @@ public class EstadoPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 40)
+    @Column(length = 20 ,nullable = false)
     private String nombre;
 }
 

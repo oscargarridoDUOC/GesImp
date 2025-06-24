@@ -25,10 +25,10 @@ public class Inventario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100, nullable = false)
     private String material;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 20, nullable = false)
     private Integer cantidad;
 
     @ManyToOne

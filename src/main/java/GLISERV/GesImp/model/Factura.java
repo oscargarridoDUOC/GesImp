@@ -3,7 +3,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ public class Factura {
     @Column(nullable = false)
     private Date fecha;
 
-    @Column(nullable = false)
+    @Column(length = 20, nullable = false)
     private Integer total;
 
     @ManyToOne

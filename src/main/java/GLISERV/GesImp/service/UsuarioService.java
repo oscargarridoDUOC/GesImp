@@ -3,7 +3,11 @@ package GLISERV.GesImp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import GLISERV.GesImp.repository.FacturaRepository;
+import GLISERV.GesImp.repository.PedidoRepository;
 import GLISERV.GesImp.repository.UsuarioRepository;
+import GLISERV.GesImp.model.Factura;
+import GLISERV.GesImp.model.Pedido;
 import GLISERV.GesImp.model.Usuario;
 
 import jakarta.transaction.Transactional;
@@ -17,6 +21,13 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
+
+
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
@@ -29,9 +40,24 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public void delete(long id) {
-    usuarioRepository.deleteById(id);
+    public void deleteById(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<Pedido> pedidos = pedidoRepository.findByUsuarioId(id);
+
+        for (Pedido pedido : pedidos) {
+            List<Factura> facturas = facturaRepository.findByPedido(pedido);
+            for (Factura factura : facturas) {
+                facturaRepository.delete(factura);
+            }
+            pedidoRepository.delete(pedido);
+        }
+
+        usuarioRepository.delete(usuario);
     }
+
+
     public Usuario update(Long id, Usuario usuario) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById((long) id);
         if (usuarioOptional.isPresent()) {

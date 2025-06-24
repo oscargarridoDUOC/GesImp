@@ -17,15 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import GLISERV.GesImp.model.Inventario;
 import GLISERV.GesImp.service.InventarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/v1/inventarios")
+@Tag(name = "Inventario", description = "Ve, crea, edita o elimina los inventario")
 public class InventarioController {
 
     @Autowired
     private InventarioService inventarioService;
 
     @GetMapping
+    @Operation(summary = "Obtiene todos los inventarios", description = "Obtiene una lista con todos los inventarios")
     public ResponseEntity<List<Inventario>> getAll() {
         List<Inventario> inventarios = inventarioService.findAll();
         if (inventarios.isEmpty()) {
@@ -35,6 +39,7 @@ public class InventarioController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtiene los inventarios por ID", description = "Ingresa un ID para obtener un inventario")
     public ResponseEntity<Inventario> getById(@PathVariable Long id) {
         Inventario inventario = inventarioService.findById(id);
         if (inventario == null) {
@@ -44,6 +49,7 @@ public class InventarioController {
     }
 
     @GetMapping("/material")
+    @Operation(summary = "Obtiene los inventarios por Material", description = "Ingresa un Material para obtener un inventario")
     public ResponseEntity<List<Inventario>> getByMaterial(@RequestParam("material") String material) {
         List<Inventario> resultados = inventarioService.findByMaterial(material);
         if (resultados.isEmpty()) {
@@ -53,13 +59,25 @@ public class InventarioController {
         }
     }
 
+    @GetMapping("/buscar/q4")
+    @Operation(summary = "Buscar inventario disponible por tipo de producto y rol de usuario",description = "Retorna materiales con stock, filtrando por tipo de producto y rol de usuario en pedidos relacionados")
+    public ResponseEntity<List<Inventario>> buscarInventarioPorTipoYRolUsuario(@RequestParam String tipoProducto,@RequestParam String rolUsuario) {
+        List<Inventario> inventarios = inventarioService.buscarInventarioPorTipoYRolUsuario(tipoProducto, rolUsuario);
+        if (inventarios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(inventarios);
+    }
+
     @PostMapping
+    @Operation(summary = "Crea un inventario", description = "Ingresa los parametros para crear un inventario")
     public ResponseEntity<Inventario> create(@RequestBody Inventario inventario) {
         Inventario nuevoInventario = inventarioService.save(inventario);
         return ResponseEntity.status(201).body(nuevoInventario);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualiza un inventario", description = "Ingresa los parametros para actualizar un inventario (solo ingresa los cambios)")
     public ResponseEntity<Inventario> update(@PathVariable Long id, @RequestBody Inventario inventario) {
         Inventario actualizado = inventarioService.update(id, inventario);
         if (actualizado == null) {
@@ -69,6 +87,7 @@ public class InventarioController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Actualiza un inventario", description = "Ingresa los parametros para actualizar un inventario")
     public ResponseEntity<Inventario> patch(@PathVariable Long id, @RequestBody Inventario inventarioParcial) {
         Inventario actualizado = inventarioService.patch(id, inventarioParcial);
         if (actualizado == null) {
@@ -78,6 +97,7 @@ public class InventarioController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Borra los inventarios por ID", description = "Ingresa un ID para borrar un inventario")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             inventarioService.deleteById(id);

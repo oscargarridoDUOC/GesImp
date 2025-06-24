@@ -3,7 +3,9 @@ package GLISERV.GesImp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import GLISERV.GesImp.model.Factura;
 import GLISERV.GesImp.model.TipoPago;
+import GLISERV.GesImp.repository.FacturaRepository;
 import GLISERV.GesImp.repository.TipoPagoRepository;
 
 import jakarta.transaction.Transactional;
@@ -16,6 +18,9 @@ public class TipoPagoService {
 
     @Autowired
     private TipoPagoRepository tipoPagoRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
 
     public List<TipoPago> findAll() {
         return tipoPagoRepository.findAll();
@@ -34,7 +39,15 @@ public class TipoPagoService {
     }
 
     public void deleteById(Long id) {
-        tipoPagoRepository.deleteById(id);
+        TipoPago tipoPago = tipoPagoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tipo de pago no encontrado"));
+
+        List<Factura> facturas = facturaRepository.findByTipoPago(tipoPago);
+        for (Factura factura : facturas) {
+            facturaRepository.delete(factura);
+        }
+
+        tipoPagoRepository.delete(tipoPago);
     }
 
     public TipoPago update(Long id, TipoPago tipoPago) {

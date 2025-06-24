@@ -3,7 +3,13 @@ package GLISERV.GesImp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import GLISERV.GesImp.model.Factura;
+import GLISERV.GesImp.model.Inventario;
+import GLISERV.GesImp.model.Pedido;
 import GLISERV.GesImp.model.Producto;
+import GLISERV.GesImp.repository.FacturaRepository;
+import GLISERV.GesImp.repository.InventarioRepository;
+import GLISERV.GesImp.repository.PedidoRepository;
 import GLISERV.GesImp.repository.ProductoRepository;
 
 import jakarta.transaction.Transactional;
@@ -16,6 +22,17 @@ public class ProductoService {
 
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private InventarioRepository inventarioRepository;
+    
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
+
+
 
     public List<Producto> findAll() {
         return productoRepository.findAll();
@@ -34,8 +51,26 @@ public class ProductoService {
     }
 
     public void deleteById(Long id) {
-        productoRepository.deleteById(id);
+        Producto producto = productoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        List<Inventario> inventarios = inventarioRepository.findByProducto(producto);
+        for (Inventario inventario : inventarios) {
+            inventarioRepository.delete(inventario);
+        }
+
+        List<Pedido> pedidos = pedidoRepository.findByProducto(producto);
+        for (Pedido pedido : pedidos) {
+            List<Factura> facturas = facturaRepository.findByPedido(pedido);
+            for (Factura factura : facturas) {
+                facturaRepository.delete(factura);
+            }
+            pedidoRepository.delete(pedido);
+        }
+
+        productoRepository.delete(producto);
     }
+
 
     public Producto update(Long id, Producto producto) {
         Optional<Producto> productoOptional = productoRepository.findById(id);

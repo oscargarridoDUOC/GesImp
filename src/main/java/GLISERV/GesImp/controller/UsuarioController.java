@@ -16,20 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import GLISERV.GesImp.model.Usuario;
 import GLISERV.GesImp.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
+@Tag(name = "Usuario", description = "Ve, crea, edita o elimina los usuarios")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping
+    @Operation(summary = "Obtiene todos los usuarios", description = "Obtiene una lista con todos los usuarios")
     public List<Usuario> getAll() {
         return usuarioService.findAll();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtiene los usuarios por ID", description = "Ingresa un ID para obtener un usuario")
     public ResponseEntity<Usuario> getById(@PathVariable long id) {
         Usuario usuario= usuarioService.findById(id);
         if (usuario != null) {
@@ -40,12 +45,14 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @Operation(summary = "Crea un usuario", description = "Ingresa los parametros para crear un usuario")
     public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
         Usuario nuevoUsuario = usuarioService.save(usuario);
         return ResponseEntity.status(201).body(nuevoUsuario);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualiza un usuario", description = "Ingresa los parametros para actualizar un usuario (solo ingresa los cambios)")
     public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
         Usuario actualizado = usuarioService.update(id, usuario);
         if (actualizado == null) {
@@ -55,6 +62,7 @@ public class UsuarioController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Actualiza un usuario", description = "Ingresa los parametros para actualizar un usuario")
     public ResponseEntity<Usuario> patch(@PathVariable Long id, @RequestBody Usuario usuarioParcial) {
         Usuario actualizado = usuarioService.patch(id, usuarioParcial);
         if (actualizado == null) {
@@ -64,9 +72,10 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Borra los usuarios por ID", description = "Ingresa un ID para borrar un usuario")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
-            usuarioService.delete(id);
+            usuarioService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

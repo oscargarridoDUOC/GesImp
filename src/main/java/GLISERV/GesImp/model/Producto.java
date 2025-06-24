@@ -23,12 +23,12 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 100 ,nullable = false)
     private String nombre;
     
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     private String tipo;
     
-    @Column(nullable = false)
+    @Column(length = 20, nullable = false)
     private Integer precio;
 }
