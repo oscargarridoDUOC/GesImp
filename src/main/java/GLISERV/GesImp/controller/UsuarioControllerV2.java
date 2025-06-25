@@ -3,7 +3,7 @@ package GLISERV.GesImp.controller;
 import GLISERV.GesImp.model.Usuario;
 import GLISERV.GesImp.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import GLISERV.GesImp.assemblers.UsuarioModelAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ public class UsuarioControllerV2 {
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Actualiza un usuario", description = "Ingresa los parametros para actualizar un usuario (solo ingresa los cambios)")
-    public ResponseEntity<EntityModel<Usuario>> updateUsuario(@PathVariable Long id, @org.springframework.web.bind.annotation.RequestBody Usuario usuario) {
+    public ResponseEntity<EntityModel<Usuario>> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         Usuario updated = usuarioService.update(id, usuario);
         if (updated == null) {
             return ResponseEntity.notFound().build();
