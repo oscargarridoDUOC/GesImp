@@ -20,6 +20,6 @@ public class PedidoModelAssembler implements RepresentationModelAssembler<Pedido
                 linkTo(methodOn(PedidoControllerV2.class).updatePedido(pedido.getId().longValue(), pedido)).withRel("actualizar"),
                 linkTo(methodOn(PedidoControllerV2.class).patchPedido(pedido.getId().longValue(), pedido)).withRel("actualización-parcial"),
                 linkTo(methodOn(PedidoControllerV2.class).deletePedido(pedido.getId().longValue())).withRel("eliminar")        
-                );
+        );
     }
 }
