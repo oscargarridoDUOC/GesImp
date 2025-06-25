@@ -57,9 +57,6 @@ public class PedidoService {
             Pedido pedidoToUpdate = pedidoOptional.get();
             pedidoToUpdate.setFecha(pedido.getFecha());
             pedidoToUpdate.setCantidad(pedido.getCantidad());
-            pedidoToUpdate.setProducto(pedido.getProducto());
-            pedidoToUpdate.setEstado(pedido.getEstado());
-            pedidoToUpdate.setUsuario(pedido.getUsuario());
             return pedidoRepository.save(pedidoToUpdate);
         } else {
             return null;

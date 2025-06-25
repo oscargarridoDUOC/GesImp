@@ -15,11 +15,15 @@ public class EstadoPedidoModelAssembler implements RepresentationModelAssembler<
     @SuppressWarnings("null")
     @Override
     public EntityModel<EstadoPedido> toModel(EstadoPedido estadoPedido) {
+        Long id = estadoPedido.getId().longValue();
         return EntityModel.of(estadoPedido,
-                linkTo(methodOn(EstadoPedidoControllerV2.class).getEstadoPedidoById(estadoPedido.getId().longValue())).withSelfRel(),
-                linkTo(methodOn(EstadoPedidoControllerV2.class).getAllEstadoPedidos()).withRel("tipoPagos"),
-                linkTo(methodOn(EstadoPedidoControllerV2.class).deleteEstadoPedido(estadoPedido.getId().longValue())).withRel("eliminar"),
-                linkTo(methodOn(EstadoPedidoControllerV2.class).updateEstadoPedido(estadoPedido.getId().longValue(), estadoPedido)).withRel("actualizar")
+            linkTo(methodOn(EstadoPedidoControllerV2.class).getEstadoPedidoById(id)).withSelfRel(),
+            linkTo(methodOn(EstadoPedidoControllerV2.class).getAllEstadoPedidos()).withRel("listar-todos"),
+            linkTo(methodOn(EstadoPedidoControllerV2.class).getByNombre(estadoPedido.getNombre())).withRel("buscar-por-nombre"),
+            linkTo(methodOn(EstadoPedidoControllerV2.class).createEstadoPedido(estadoPedido)).withRel("crear"),
+            linkTo(methodOn(EstadoPedidoControllerV2.class).updateEstadoPedido(id, estadoPedido)).withRel("actualizar"),
+            linkTo(methodOn(EstadoPedidoControllerV2.class).patchEstadoPedido(id, estadoPedido)).withRel("patch"),
+            linkTo(methodOn(EstadoPedidoControllerV2.class).deleteEstadoPedido(id)).withRel("eliminar")
         );
     }
 }

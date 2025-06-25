@@ -15,9 +15,11 @@ public class PedidoModelAssembler implements RepresentationModelAssembler<Pedido
     @Override
     public EntityModel<Pedido> toModel(Pedido pedido) {
         return EntityModel.of(pedido,
-                linkTo(methodOn(PedidoControllerV2.class).getPedidoById(Long.valueOf(pedido.getId()))).withSelfRel(),
-                linkTo(methodOn(PedidoControllerV2.class).deletePedido(Long.valueOf(pedido.getId()))).withRel("eliminar"),
-                linkTo(methodOn(PedidoControllerV2.class).updatePedido(Long.valueOf(pedido.getId()), pedido)).withRel("actualizar")
-        );
+                linkTo(methodOn(PedidoControllerV2.class).getPedidoById(pedido.getId().longValue())).withSelfRel(),
+                linkTo(methodOn(PedidoControllerV2.class).getAllPedidos()).withRel("listar-todos"),
+                linkTo(methodOn(PedidoControllerV2.class).updatePedido(pedido.getId().longValue(), pedido)).withRel("actualizar"),
+                linkTo(methodOn(PedidoControllerV2.class).patchPedido(pedido.getId().longValue(), pedido)).withRel("actualización-parcial"),
+                linkTo(methodOn(PedidoControllerV2.class).deletePedido(pedido.getId().longValue())).withRel("eliminar")        
+                );
     }
 }

@@ -16,10 +16,12 @@ public class ProductoModelAssembler implements RepresentationModelAssembler<Prod
     @Override
     public EntityModel<Producto> toModel(Producto producto) {
         return EntityModel.of(producto,
-                linkTo(methodOn(ProductoControllerV2.class).getProductoById(Long.valueOf(producto.getId()))).withSelfRel(),
-                linkTo(methodOn(ProductoControllerV2.class).getAllProductos()).withRel("productos"),
-                linkTo(methodOn(ProductoControllerV2.class).deleteProducto(Long.valueOf(producto.getId()))).withRel("eliminar"),
-                linkTo(methodOn(ProductoControllerV2.class).updateProducto(Integer.valueOf(producto.getId()), producto)).withRel("actualizar")
+                linkTo(methodOn(ProductoControllerV2.class).getProductoById(producto.getId().longValue())).withSelfRel(),
+                linkTo(methodOn(ProductoControllerV2.class).getAllProductos()).withRel("listar-todos"),
+                linkTo(methodOn(ProductoControllerV2.class).updateProducto(producto.getId(), producto)).withRel("actualizar"),
+                linkTo(methodOn(ProductoControllerV2.class).patchProducto(producto.getId().longValue(), producto)).withRel("actualización-parcial"),
+                linkTo(methodOn(ProductoControllerV2.class).deleteProducto(producto.getId().longValue())).withRel("eliminar"),
+                linkTo(methodOn(ProductoControllerV2.class).getProductoByNombre(producto.getNombre())).withRel("buscar-nombre")
         );
     }
 }

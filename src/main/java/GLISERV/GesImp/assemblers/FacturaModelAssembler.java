@@ -15,11 +15,16 @@ public class FacturaModelAssembler implements RepresentationModelAssembler<Factu
     @SuppressWarnings("null")
     @Override
     public EntityModel<Factura> toModel(Factura factura) {
+        Long id = factura.getId().longValue();
         return EntityModel.of(factura,
-                linkTo(methodOn(FacturaControllerV2.class).getFacturaById(factura.getId().longValue())).withSelfRel(),
-                linkTo(methodOn(FacturaControllerV2.class).getAllFacturas()).withRel("tipoPagos"),
-                linkTo(methodOn(FacturaControllerV2.class).deleteFactura(factura.getId().longValue())).withRel("eliminar"),
-                linkTo(methodOn(FacturaControllerV2.class).updateFactura(factura.getId().longValue(), factura)).withRel("actualizar")
-        );
+            linkTo(methodOn(FacturaControllerV2.class).getFacturaById(id)).withSelfRel(),
+            linkTo(methodOn(FacturaControllerV2.class).getAllFacturas()).withRel("listar-todas"),
+            linkTo(methodOn(FacturaControllerV2.class).buscarPorTipoPagoYTotalMinimo("Efectivo", 1000)).withRel("buscar-tipoPago-y-minimo"),
+            linkTo(methodOn(FacturaControllerV2.class).buscarFacturasPorUsuarioProductoYTipoPago("usuario", "tipoProducto", "pago")).withRel("buscar-usuario-producto-pago"),
+            linkTo(methodOn(FacturaControllerV2.class).buscarFacturasPorUsuarioYProducto("usuario", "producto")).withRel("buscar-usuario-producto"),
+            linkTo(methodOn(FacturaControllerV2.class).createFactura(factura)).withRel("crear"),
+            linkTo(methodOn(FacturaControllerV2.class).updateFactura(id, factura)).withRel("actualizar"),
+            linkTo(methodOn(FacturaControllerV2.class).patchFactura(factura.getId(), factura)).withRel("patch"),
+            linkTo(methodOn(FacturaControllerV2.class).deleteFactura(id)).withRel("eliminar")        );
     }
 }

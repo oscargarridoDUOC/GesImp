@@ -16,10 +16,12 @@ public class InventarioModelAssembler implements RepresentationModelAssembler<In
     @Override
     public EntityModel<Inventario> toModel(Inventario inventario) {
         return EntityModel.of(inventario,
-                linkTo(methodOn(InventarioControllerV2.class).getInventarioById(inventario.getId().longValue())).withSelfRel(),
-                linkTo(methodOn(InventarioControllerV2.class).getAllInventarios()).withRel("tipoPagos"),
-                linkTo(methodOn(InventarioControllerV2.class).deleteInventario(inventario.getId().longValue())).withRel("eliminar"),
-                linkTo(methodOn(InventarioControllerV2.class).updateInventario(inventario.getId().longValue(), inventario)).withRel("actualizar")
-        );
+            linkTo(methodOn(InventarioControllerV2.class).getInventarioById(inventario.getId().longValue())).withSelfRel(),
+            linkTo(methodOn(InventarioControllerV2.class).getAllInventarios()).withRel("listar-todos"),
+            linkTo(methodOn(InventarioControllerV2.class).updateInventario(inventario.getId().longValue(), inventario)).withRel("actualizar"),
+            linkTo(methodOn(InventarioControllerV2.class).patchInventario(inventario.getId().longValue(), inventario)).withRel("actualización-parcial"),
+            linkTo(methodOn(InventarioControllerV2.class).deleteInventario(inventario.getId().longValue())).withRel("eliminar"),
+            linkTo(methodOn(InventarioControllerV2.class).getInventarioByMaterial(inventario.getMaterial())).withRel("buscar-por-material")        
+            );
     }
 }

@@ -65,7 +65,6 @@ public class UsuarioService {
             usuarioToUpdate.setNombre(usuario.getNombre());
             usuarioToUpdate.setEmail(usuario.getEmail());
             usuarioToUpdate.setRol(usuario.getRol());
-            usuarioToUpdate.setPassword(usuario.getPassword());
             return usuarioRepository.save(usuarioToUpdate);
         } else {
             return null;

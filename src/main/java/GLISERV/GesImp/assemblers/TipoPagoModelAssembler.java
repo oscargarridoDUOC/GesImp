@@ -17,9 +17,11 @@ public class TipoPagoModelAssembler implements RepresentationModelAssembler<Tipo
     public EntityModel<TipoPago> toModel(TipoPago tipoPago) {
         return EntityModel.of(tipoPago,
                 linkTo(methodOn(TipoPagoControllerV2.class).getTipoPagoById(tipoPago.getId().longValue())).withSelfRel(),
-                linkTo(methodOn(TipoPagoControllerV2.class).getAllTipoPagos()).withRel("tipoPagos"),
+                linkTo(methodOn(TipoPagoControllerV2.class).getAllTipoPagos()).withRel("listar-todos"),
+                linkTo(methodOn(TipoPagoControllerV2.class).updateTipoPago(tipoPago.getId().longValue(), tipoPago)).withRel("actualizar"),
+                linkTo(methodOn(TipoPagoControllerV2.class).patchTipoPago(tipoPago.getId().longValue(), tipoPago)).withRel("actualización-parcial"),
                 linkTo(methodOn(TipoPagoControllerV2.class).deleteTipoPago(tipoPago.getId().longValue())).withRel("eliminar"),
-                linkTo(methodOn(TipoPagoControllerV2.class).updateTipoPago(tipoPago.getId().longValue(), tipoPago)).withRel("actualizar")
+                linkTo(methodOn(TipoPagoControllerV2.class).getTipoPagoByNombre(tipoPago.getNombre())).withRel("buscar-nombre")
         );
     }
 }

@@ -17,9 +17,10 @@ public class UsuarioModelAssembler implements RepresentationModelAssembler<Usuar
     public EntityModel<Usuario> toModel(Usuario usuario) {
         return EntityModel.of(usuario,
                 linkTo(methodOn(UsuarioControllerV2.class).getUsuarioById(usuario.getId().longValue())).withSelfRel(),
-                linkTo(methodOn(UsuarioControllerV2.class).getAllUsuarios()).withRel("usuarios"),
-                linkTo(methodOn(UsuarioControllerV2.class).deleteUsuario(usuario.getId().longValue())).withRel("eliminar"),
-                linkTo(methodOn(UsuarioControllerV2.class).updateUsuario(usuario.getId().longValue(), usuario)).withRel("actualizar")
+                linkTo(methodOn(UsuarioControllerV2.class).getAllUsuarios()).withRel("listar-todos"),
+                linkTo(methodOn(UsuarioControllerV2.class).updateUsuario(usuario.getId().longValue(), usuario)).withRel("actualizar"),
+                linkTo(methodOn(UsuarioControllerV2.class).patchUsuario(usuario.getId().longValue(), usuario)).withRel("actualización-parcial"),
+                linkTo(methodOn(UsuarioControllerV2.class).deleteUsuario(usuario.getId().longValue())).withRel("eliminar")
         );
     }
 }
