@@ -159,18 +159,18 @@ public class FacturaServiceTest {
         assertEquals(factura.getId(), resultado.get(0).getId());
     }
 
-@Test
-public void testBuscarFacturasPorUsuarioYProducto() {
-    Factura factura = createFactura();
-
-    when(facturaRepository.buscarFacturasPorUsuarioYProducto("Juan", "Papel"))
-        .thenReturn(List.of(factura));
-
-    List<Factura> resultado = facturaService.buscarFacturasPorUsuarioYProducto("Juan", "Papel");
-
-    assertNotNull(resultado);
-    assertEquals(1, resultado.size());
-    assertEquals(factura.getId(), resultado.get(0).getId());
-}
+    @Test
+    public void testBuscarFacturasPorUsuarioYProducto() {
+        Factura factura = createFactura();
+    
+        when(facturaRepository.buscarFacturasPorUsuarioYProducto("Juan", "Papel"))
+            .thenReturn(List.of(factura));
+    
+        List<Factura> resultado = facturaService.buscarFacturasPorUsuarioYProducto("Juan", "Papel");
+    
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        assertEquals(factura.getId(), resultado.get(0).getId());
+    }
 
 }
