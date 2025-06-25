@@ -70,9 +70,8 @@ public class UsuarioControllerV2 {
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Actualiza un usuario", description = "Ingresa los parametros para actualizar un usuario (solo ingresa los cambios)")
-    public ResponseEntity<EntityModel<Usuario>> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        usuario.setId(id.intValue());
-        Usuario updated = usuarioService.save(usuario);
+    public ResponseEntity<EntityModel<Usuario>> updateUsuario(@PathVariable Long id, @org.springframework.web.bind.annotation.RequestBody Usuario usuario) {
+        Usuario updated = usuarioService.update(id, usuario);
         if (updated == null) {
             return ResponseEntity.notFound().build();
         }
